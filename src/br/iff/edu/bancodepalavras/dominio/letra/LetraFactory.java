@@ -1,4 +1,4 @@
-package br.iff.edu.dominio.letra;
+package br.iff.edu.bancodepalavras.dominio.letra;
 
 public interface LetraFactory {
 	

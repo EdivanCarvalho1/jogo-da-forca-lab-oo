@@ -1,16 +1,16 @@
-package br.iff.edu.dominio.tema.embdr;
+package br.iff.edu.bancodepalavras.dominio.tema.embdr;
 
 import java.util.Map;
 
-import br.iff.edu.dominio.tema.Tema;
-import br.iff.edu.dominio.tema.TemaRepository;
+import br.iff.edu.bancodepalavras.dominio.tema.Tema;
+import br.iff.edu.bancodepalavras.dominio.tema.TemaRepository;
 
 public class BDRTemaRepository implements TemaRepository {
 
 	@Override
-	public Long getProximoId() {
+	public long getProximoId() {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override

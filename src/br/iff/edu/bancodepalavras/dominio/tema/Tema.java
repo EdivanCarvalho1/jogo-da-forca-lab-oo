@@ -1,4 +1,4 @@
-package br.iff.edu.dominio.tema;
+package br.iff.edu.bancodepalavras.dominio.tema;
 
 import br.iff.edu.dominio.ObjetoDominioImpl;
 

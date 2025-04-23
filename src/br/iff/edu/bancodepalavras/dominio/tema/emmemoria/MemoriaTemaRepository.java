@@ -1,10 +1,11 @@
-package br.iff.edu.dominio.tema.emmemoria;
+package br.iff.edu.bancodepalavras.dominio.tema.emmemoria;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import br.iff.edu.dominio.tema.Tema;
-import br.iff.edu.dominio.tema.TemaRepository;
+import br.iff.edu.bancodepalavras.dominio.tema.Tema;
+import br.iff.edu.bancodepalavras.dominio.tema.TemaRepository;
+import br.iff.edu.repository.RepositoryException;
 
 public class MemoriaTemaRepository implements TemaRepository {
 
@@ -27,7 +28,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public Long getProximoId() {
+	public long getProximoId() {
 		return id++;
 	}
 
@@ -60,7 +61,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public void inserir(Tema tema) {
+	public void inserir(Tema tema) throws RepositoryException {
 		if (tema == null) {
 			throw new IllegalArgumentException("Tema não pode ser nulo!");
 		}
@@ -68,7 +69,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public void atualizar(Tema tema) {
+	public void atualizar(Tema tema) throws RepositoryException {
 		if (hashMap.containsKey(tema.getId()) && hashMap != null) {
 			hashMap.put(tema.getId(), tema);
 		}
@@ -76,7 +77,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public void remover(Tema tema) {
+	public void remover(Tema tema) throws RepositoryException {
 		if(hashMap.isEmpty() || tema == null) {
 			throw new IllegalArgumentException("A lista está vazia e/ou o tema é nulo");
 		}

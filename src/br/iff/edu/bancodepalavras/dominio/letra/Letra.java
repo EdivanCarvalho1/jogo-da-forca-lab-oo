@@ -1,12 +1,15 @@
-package br.iff.edu.dominio.letra;
+package br.iff.edu.bancodepalavras.dominio.letra;
 
 import java.util.Objects;
 
-public abstract class Letra {
+import br.iff.edu.dominio.ObjetoDominioImpl;
+
+public abstract class Letra extends ObjetoDominioImpl {
 	
 	private char codigo;
 	
-	protected Letra(char codigo) {
+	protected Letra(long id, char codigo) {
+		super(id);
 		this.codigo = codigo;
 	}
 	

@@ -1,9 +1,10 @@
-package br.iff.edu.dominio.letra;
+package br.iff.edu.bancodepalavras.dominio.letra;
 
+import br.iff.edu.bancodepalavras.dominio.letra.texto.LetraTexto;
 import br.iff.edu.factory.EntityFactory;
 import br.iff.edu.repository.Repository;
 
-public class LetraFactoryImpl extends EntityFactory implements LetraFactory {
+public abstract class LetraFactoryImpl extends EntityFactory implements LetraFactory {
 	
 	private Letra encoberta;
 	private Letra[] pool;
@@ -23,8 +24,10 @@ public class LetraFactoryImpl extends EntityFactory implements LetraFactory {
 		
 		Letra result = this.pool[i];
 		if(result == null) {
-			
+			throw new RuntimeException("O resultado é nulo!");
 		}
+		
+		return result;
 	}
 
 	@Override
