@@ -33,9 +33,12 @@ public class MemoriaTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public Tema getPorId(Long id) {
-		if(id == null) {
+	public Tema getPorId(long id) {
+		if(id <= 0) {
 			throw new IllegalArgumentException("Id não pode ser nulo!");
+		}
+		if(this.hashMap.isEmpty()) {
+			throw new RuntimeException("A lista está vazia");
 		}
 		return this.hashMap.get(id);
 	}
@@ -63,7 +66,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 	@Override
 	public void inserir(Tema tema) throws RepositoryException {
 		if (tema == null) {
-			throw new IllegalArgumentException("Tema não pode ser nulo!");
+			throw new RepositoryException("Tema não pode ser nulo!");
 		}
 		this.hashMap.put(tema.getId(), tema);
 	}
@@ -73,13 +76,13 @@ public class MemoriaTemaRepository implements TemaRepository {
 		if (hashMap.containsKey(tema.getId()) && hashMap != null) {
 			hashMap.put(tema.getId(), tema);
 		}
-		throw new IllegalArgumentException("Tema não pode ser nulo!");
+		throw new RepositoryException("Tema não pode ser nulo!");
 	}
 
 	@Override
 	public void remover(Tema tema) throws RepositoryException {
 		if(hashMap.isEmpty() || tema == null) {
-			throw new IllegalArgumentException("A lista está vazia e/ou o tema é nulo");
+			throw new RepositoryException("A lista está vazia e/ou o tema é nulo");
 		}
 		this.hashMap.remove(tema.getId(), tema);
 	}

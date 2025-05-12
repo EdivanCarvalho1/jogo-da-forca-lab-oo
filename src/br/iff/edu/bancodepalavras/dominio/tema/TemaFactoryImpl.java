@@ -12,10 +12,16 @@ public class TemaFactoryImpl extends EntityFactory implements TemaFactory{
 	}
 	
 	public static void createSoleInstance(TemaRepository repository) {
-		soleInstance = new TemaFactoryImpl(repository);
+		if(soleInstance == null) {
+			soleInstance = new TemaFactoryImpl(repository);
+		}
+		throw new IllegalArgumentException("A instância já existe!");
 	}
 	
 	public static TemaFactoryImpl getSoleInstance() {
+		if(soleInstance == null) {
+			throw new RuntimeException("A instância ainda não existe!");
+		}
 		return soleInstance;
 	}
 	

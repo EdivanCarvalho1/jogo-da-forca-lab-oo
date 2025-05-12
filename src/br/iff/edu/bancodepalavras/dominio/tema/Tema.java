@@ -1,6 +1,6 @@
 package br.iff.edu.bancodepalavras.dominio.tema;
 
-import br.iff.edu.dominio.ObjetoDominioImpl;
+import br.iff.edu.jogodaforca.dominio.ObjetoDominioImpl;
 
 public class Tema extends ObjetoDominioImpl {
 	

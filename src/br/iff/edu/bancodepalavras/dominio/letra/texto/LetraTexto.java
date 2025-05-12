@@ -4,13 +4,13 @@ import br.iff.edu.bancodepalavras.dominio.letra.Letra;
 
 public class LetraTexto extends Letra {
 
-	public LetraTexto(long id, char codigo) {
-		super(id, codigo);
+	public LetraTexto(char codigo) {
+		super(codigo);
 	}
 	
 	@Override
 	public void exibir(Object context) {
-		System.out.println(this.getCodigo());
+		System.out.print(this.getCodigo());
 	}
 
 }

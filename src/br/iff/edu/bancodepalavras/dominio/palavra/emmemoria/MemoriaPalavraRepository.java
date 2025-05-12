@@ -1,6 +1,5 @@
 package br.iff.edu.bancodepalavras.dominio.palavra.emmemoria;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +47,7 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 
 		for (Map.Entry<Long, Palavra> entry : hashMap.entrySet()) {
 			Palavra palavra = entry.getValue();
-			if (palavra.getTema().equals(tema)) {
+			if (palavra.getTema().equals(palavra)) {
 				resultado.put(entry.getKey(), palavra);
 			}
 		}
@@ -62,22 +61,27 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 	}
 
 	@Override
-	public void inserir(Palavra palavra) throws RepositoryException {
+	public void inserir(Palavra palavra) throws RepositoryException{
 		if(palavra != null) {
 			this.hashMap.put(this.getProximoId(), palavra);
 		}
+		throw new RepositoryException("Palavra não pode ser nula!");
 	}
 
 	@Override
-	public void atualizar(Palavra palavra) throws RepositoryException {
-		// TODO Auto-generated method stub
-
+	public void atualizar(Palavra palavra) throws RepositoryException{
+		if (hashMap.containsKey(palavra.getId()) && hashMap != null) {
+			hashMap.put(palavra.getId(), palavra);
+		}
+		throw new RepositoryException("Não foi possível atualizar a palavra");
 	}
 
 	@Override
-	public void remover(Palavra palavra) throws RepositoryException {
-		// TODO Auto-generated method stub
-
+	public void remover(Palavra palavra)  throws RepositoryException{
+		if(hashMap.isEmpty() || palavra == null) {
+			throw new RepositoryException("A lista está vazia e/ou o palavra é nulo");
+		}
+		this.hashMap.remove(palavra.getId(), palavra);
 	}
 
 }

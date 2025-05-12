@@ -2,14 +2,14 @@ package br.iff.edu.bancodepalavras.dominio.letra;
 
 import java.util.Objects;
 
-import br.iff.edu.dominio.ObjetoDominioImpl;
+import br.iff.edu.jogodaforca.dominio.ObjetoDominioImpl;
 
-public abstract class Letra extends ObjetoDominioImpl {
+public abstract class Letra {
 	
 	private char codigo;
 	
-	protected Letra(long id, char codigo) {
-		super(id);
+	protected Letra(char codigo) {
+
 		this.codigo = codigo;
 	}
 	
@@ -17,9 +17,7 @@ public abstract class Letra extends ObjetoDominioImpl {
 		return this.codigo;
 	}
 	
-	public void exibir(Object context) {
-		
-	}
+	public abstract void exibir(Object context);
 
 	@Override
 	public int hashCode() {

@@ -14,7 +14,7 @@ public class BDRTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public Tema getPorId(Long id) {
+	public Tema getPorId(long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

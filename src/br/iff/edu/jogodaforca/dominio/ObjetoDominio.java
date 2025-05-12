@@ -1,4 +1,4 @@
-package br.iff.edu.dominio;
+package br.iff.edu.jogodaforca.dominio;
 
 public interface ObjetoDominio {
 	

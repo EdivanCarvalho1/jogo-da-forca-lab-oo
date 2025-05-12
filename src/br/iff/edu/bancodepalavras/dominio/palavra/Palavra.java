@@ -3,7 +3,7 @@ package br.iff.edu.bancodepalavras.dominio.palavra;
 import br.iff.edu.bancodepalavras.dominio.letra.Letra;
 import br.iff.edu.bancodepalavras.dominio.letra.LetraFactory;
 import br.iff.edu.bancodepalavras.dominio.tema.Tema;
-import br.iff.edu.dominio.ObjetoDominioImpl;
+import br.iff.edu.jogodaforca.dominio.ObjetoDominioImpl;
 
 public class Palavra extends ObjetoDominioImpl {
 	

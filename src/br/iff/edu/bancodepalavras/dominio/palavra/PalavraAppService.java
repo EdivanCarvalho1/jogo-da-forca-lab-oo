@@ -1,6 +1,10 @@
 package br.iff.edu.bancodepalavras.dominio.palavra;
 
+import java.util.Map;
+
+import br.iff.edu.bancodepalavras.dominio.tema.Tema;
 import br.iff.edu.bancodepalavras.dominio.tema.TemaRepository;
+import br.iff.edu.repository.RepositoryException;
 
 public class PalavraAppService {
 	
@@ -36,5 +40,39 @@ public class PalavraAppService {
 			throw new IllegalArgumentException("PalavraFactory não pode ser nulo!");
 		}
 		this.palavraFactory = palavraFactory;
+	}
+	
+	public static void createSoleInstance(TemaRepository temaRepository, PalavraRepository palavraRepository, PalavraFactory palavraFactory) {
+		new PalavraAppService(temaRepository, palavraRepository, palavraFactory);
+	}
+	
+	public static PalavraAppService getSoleInstance() {
+		return soleInstance;
+	}
+	public boolean novaPalavra(String palavra, long idTema) {
+	    try {
+	        Tema tema = this.temaRepository.getPorId(idTema);
+	        
+	        if (tema == null) {
+	            throw new IllegalArgumentException("Tema com ID " + idTema + " não existe!");
+	        }
+	        
+	        Map<Long, Palavra> mapPalavra = this.palavraRepository.getPorTema(tema);
+
+	        for (Palavra p : mapPalavra.values()) {
+	            if (p.comparar(palavra)) {
+	                return true;
+	            }
+	        }
+
+	        Palavra novaPalavra = this.palavraFactory.getPalavra(palavra, tema);
+
+	        this.palavraRepository.inserir(novaPalavra);
+
+	        return true;
+	    } catch (RepositoryException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 }
