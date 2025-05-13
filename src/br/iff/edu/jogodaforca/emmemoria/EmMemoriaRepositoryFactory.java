@@ -1,4 +1,4 @@
-package br.iff.edu.jogodaforca.embdr;
+package br.iff.edu.jogodaforca.emmemoria;
 
 import br.iff.edu.bancodepalavras.dominio.palavra.PalavraRepository;
 import br.iff.edu.bancodepalavras.dominio.palavra.emmemoria.MemoriaPalavraRepository;

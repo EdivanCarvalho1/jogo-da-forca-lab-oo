@@ -33,6 +33,13 @@ public class TemaFactoryImpl extends EntityFactory implements TemaFactory{
 	public Tema getTema(String nome) {
 		
 		Tema t = Tema.criar(getTemaRepository().getProximoId(), nome);
+		
+		try {
+			this.getTemaRepository().inserir(t);
+		} catch (RepositoryException e) {
+			System.out.println(e.getMessage());
+		}
+		
 		return t;
 	}
 }

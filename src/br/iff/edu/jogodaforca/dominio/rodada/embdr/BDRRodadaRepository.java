@@ -8,7 +8,19 @@ import br.iff.edu.jogodaforca.dominio.rodada.RodadaRepository;
 import br.iff.edu.repository.RepositoryException;
 
 public class BDRRodadaRepository implements RodadaRepository {
-
+	
+	private static BDRRodadaRepository soleInstance;
+	
+	private BDRRodadaRepository() {
+	}
+	
+	public static BDRRodadaRepository getSoleInstance() {
+		if (soleInstance == null) {
+			soleInstance = new BDRRodadaRepository();
+		}
+		return soleInstance;
+	}
+	
 	@Override
 	public Rodada getPorId(long id) {
 		// TODO Auto-generated method stub
