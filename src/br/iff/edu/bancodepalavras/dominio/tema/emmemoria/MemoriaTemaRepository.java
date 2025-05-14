@@ -13,23 +13,23 @@ public class MemoriaTemaRepository implements TemaRepository {
 
 	private Map<Long, Tema> hashMap;
 
-	private long id = 0;
+	private Long id = 0L;
 
 	private MemoriaTemaRepository() {
 		hashMap = new HashMap<Long, Tema>();
 	}
 
 	public static MemoriaTemaRepository getSoleInstance() {
-		if (soleInstance == null) {
-			return new MemoriaTemaRepository();
+		if (soleInstance != null) {
+			return soleInstance;
 		}
 
-		return soleInstance;
+		return soleInstance = new MemoriaTemaRepository();
 	}
 
 	@Override
 	public long getProximoId() {
-		return id++;
+		return id +=1L;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 		if(this.hashMap.isEmpty()) {
 			throw new RuntimeException("A lista está vazia");
 		}
-		return this.hashMap.get(id);
+		return this.hashMap.get(1);
 	}
 
 	@Override
@@ -65,16 +65,13 @@ public class MemoriaTemaRepository implements TemaRepository {
 
 	@Override
 	public void inserir(Tema tema) throws RepositoryException {
-		if (tema == null) {
-			throw new RepositoryException("Tema não pode ser nulo!");
-		}
-		this.hashMap.put(tema.getId(), tema);
+		this.hashMap.put(this.getProximoId(), tema);
 	}
 
 	@Override
 	public void atualizar(Tema tema) throws RepositoryException {
 		if (hashMap.containsKey(tema.getId()) && hashMap != null) {
-			hashMap.put(tema.getId(), tema);
+			hashMap.put(this.getProximoId(), tema);
 		}
 		throw new RepositoryException("Tema não pode ser nulo!");
 	}

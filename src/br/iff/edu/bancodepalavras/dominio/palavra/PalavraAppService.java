@@ -43,7 +43,7 @@ public class PalavraAppService {
 	}
 	
 	public static void createSoleInstance(TemaRepository temaRepository, PalavraRepository palavraRepository, PalavraFactory palavraFactory) {
-		new PalavraAppService(temaRepository, palavraRepository, palavraFactory);
+		soleInstance = new PalavraAppService(temaRepository, palavraRepository, palavraFactory);
 	}
 	
 	public static PalavraAppService getSoleInstance() {
@@ -51,7 +51,7 @@ public class PalavraAppService {
 	}
 	public boolean novaPalavra(String palavra, long idTema) {
 	    try {
-	        Tema tema = this.temaRepository.getPorId(idTema);
+	        Tema tema = this.temaRepository.getPorId(1L);
 	        
 	        if (tema == null) {
 	            throw new IllegalArgumentException("Tema com ID " + idTema + " não existe!");

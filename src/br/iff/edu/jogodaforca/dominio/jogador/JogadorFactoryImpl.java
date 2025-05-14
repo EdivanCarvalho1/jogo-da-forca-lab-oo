@@ -16,7 +16,6 @@ public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory 
 		if(soleInstance == null) {
 			soleInstance = new JogadorFactoryImpl(repository);
 		}
-		throw new IllegalArgumentException("A instância já existe!");
 	}
 	
 	public static JogadorFactoryImpl getSoleInstance() {

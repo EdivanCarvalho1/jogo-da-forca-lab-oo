@@ -22,10 +22,8 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl implements RodadaFac
 	
 	public static void createSoleInstance(RodadaRepository rodadaRepository, TemaRepository temaRepository,
 			PalavraRepository palavraRepository) {
-		if (soleInstance == null) {
 			soleInstance = new RodadaSorteioFactory(rodadaRepository, temaRepository, palavraRepository);
-		}
-		throw new IllegalStateException("Sole instance already created");
+		
 	}
 
 	public static RodadaSorteioFactory getSoleInstance() {
@@ -43,10 +41,14 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl implements RodadaFac
 	        throw new IllegalStateException("Nenhum tema disponível");
 	    }
 	    List<Tema> temas = new ArrayList<>(mapaTemas.values());
-	    Tema temaSorteado = temas.get((int) (Math.random() * temas.size()));
+	    Tema temaSorteado = getTemaRepository().getPorId(1);
 
 	    Map<Long, Palavra> mapaPalavras = getPalavraRepository().getPorTema(temaSorteado);
 	    List<Palavra> palavrasDoTema = new ArrayList<>(mapaPalavras.values());
+	    
+	    for(Palavra palavra : palavrasDoTema) {
+	    	System.out.println(palavra.getLetra(0));
+	    }
 
 	    if (palavrasDoTema.size() < Rodada.getMaxPalavras()) {
 	        throw new IllegalStateException("Tema sorteado não tem palavras suficientes");

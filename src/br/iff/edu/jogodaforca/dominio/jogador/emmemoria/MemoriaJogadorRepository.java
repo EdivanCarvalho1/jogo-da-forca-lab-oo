@@ -21,14 +21,14 @@ public class MemoriaJogadorRepository implements JogadorRepository{
 	
 	public static MemoriaJogadorRepository getSoleInstance() {
 		if(soleInstance == null) {
-			return new MemoriaJogadorRepository();
+			return soleInstance = new MemoriaJogadorRepository();
 		}
 		return soleInstance;
 	}
 	
 	@Override
 	public long getProximoId() {
-		return this.id++;
+		return this.id +=1;
 	}
 
 	@Override
@@ -59,10 +59,7 @@ public class MemoriaJogadorRepository implements JogadorRepository{
 
 	@Override
 	public void inserir(Jogador jogador) throws RepositoryException {
-		if(jogador == null) {
-			throw new RepositoryException("Jogador não pode ser nulo!");
-		}
-		this.hashMap.put(jogador.getId(), jogador);
+		this.hashMap.put(this.getProximoId(), jogador);
 	}
 
 	@Override

@@ -21,10 +21,10 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 	}
 
 	public static MemoriaPalavraRepository getSoleInstance() {
-		if (soleInstance == null) {
-			throw new RuntimeException("A instância de MemoriaPalavraRepository é nula!");
+		if (soleInstance != null) {
+			return soleInstance;
 		}
-		return soleInstance;
+		return soleInstance = new MemoriaPalavraRepository();
 	}
 
 	@Override
@@ -65,7 +65,6 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 		if(palavra != null) {
 			this.hashMap.put(this.getProximoId(), palavra);
 		}
-		throw new RepositoryException("Palavra não pode ser nula!");
 	}
 
 	@Override

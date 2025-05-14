@@ -29,4 +29,8 @@ public class Tema extends ObjetoDominioImpl {
 	public static Tema reconstituir(Long id, String nome) {
 		return new Tema(id, nome);
 	}
+	
+	public String toString() {
+		return "id="+ this.getId();
+	}
 }

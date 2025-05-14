@@ -20,6 +20,7 @@ public class EmMemoriaRepositoryFactory implements RepositoryFactory {
 	public static EmMemoriaRepositoryFactory getSoleInstance() {
 		if (soleInstance == null) {
 			soleInstance = new EmMemoriaRepositoryFactory();
+			return soleInstance;
 		}
 		return soleInstance;
 	}

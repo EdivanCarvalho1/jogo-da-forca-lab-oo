@@ -12,10 +12,10 @@ public class LetraTextoFactory extends LetraFactoryImpl{
 	}
 	
 	public static LetraTextoFactory getSoleInstance() {
-		if(soleInstance == null) {
-			soleInstance = new LetraTextoFactory();
+		if(soleInstance != null) {
+			return soleInstance;
 		}
-		return soleInstance;
+		return soleInstance = new LetraTextoFactory();
 	}
 	
 	@Override

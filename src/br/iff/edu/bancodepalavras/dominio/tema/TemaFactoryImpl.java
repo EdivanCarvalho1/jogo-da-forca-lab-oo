@@ -15,7 +15,7 @@ public class TemaFactoryImpl extends EntityFactory implements TemaFactory{
 		if(soleInstance == null) {
 			soleInstance = new TemaFactoryImpl(repository);
 		}
-		throw new IllegalArgumentException("A instância já existe!");
+		return;
 	}
 	
 	public static TemaFactoryImpl getSoleInstance() {

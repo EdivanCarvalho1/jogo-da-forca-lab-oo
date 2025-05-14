@@ -4,6 +4,7 @@ import br.iff.edu.bancodepalavras.dominio.letra.Letra;
 import br.iff.edu.bancodepalavras.dominio.letra.LetraFactory;
 import br.iff.edu.bancodepalavras.dominio.tema.Tema;
 import br.iff.edu.jogodaforca.dominio.ObjetoDominioImpl;
+import br.iff.edu.jogodaforca.texto.ElementoGraficoTextoFactory;
 
 public class Palavra extends ObjetoDominioImpl {
 	
@@ -13,13 +14,13 @@ public class Palavra extends ObjetoDominioImpl {
 	
 	private Letra[] letras;
 	
-	private static LetraFactory letraFactory;
+	private static LetraFactory letraFactory = ElementoGraficoTextoFactory.getSoleInstance();
 	
 	private Palavra(Long id, String palavra, Tema tema) {
 		super(id);
 		this.palavra = palavra;
 		this.tema = tema;
-		
+		this.letras = new Letra[palavra.length()];
 		for (int i = 0; i < palavra.length(); i++) {
 			this.letras[i] = getLetraFactory().getLetra(palavra.charAt(i));
 		}
@@ -32,10 +33,10 @@ public class Palavra extends ObjetoDominioImpl {
 		throw new IllegalArgumentException("LetraFactory não pode ser nulo!");
 	}
 	public static LetraFactory getLetraFactory() {
-		if(letraFactory != null){
-			return letraFactory;
+		if(letraFactory == null){
+			throw new RuntimeException("LetraFactory é nulo!");
 		}
-		throw new RuntimeException("LetraFactory é nulo!");
+		return letraFactory;
 			
 	}
 	public static Palavra criar(long id, String palavra, Tema tema) {

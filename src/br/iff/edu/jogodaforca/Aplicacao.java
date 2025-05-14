@@ -2,9 +2,12 @@ package br.iff.edu.jogodaforca;
 
 import br.iff.edu.bancodepalavras.dominio.letra.LetraFactory;
 import br.iff.edu.bancodepalavras.dominio.palavra.PalavraFactory;
+import br.iff.edu.bancodepalavras.dominio.palavra.PalavraFactoryImpl;
 import br.iff.edu.bancodepalavras.dominio.tema.TemaFactory;
+import br.iff.edu.bancodepalavras.dominio.tema.TemaFactoryImpl;
 import br.iff.edu.jogodaforca.dominio.boneco.BonecoFactory;
 import br.iff.edu.jogodaforca.dominio.jogador.JogadorFactory;
+import br.iff.edu.jogodaforca.dominio.jogador.JogadorFactoryImpl;
 import br.iff.edu.jogodaforca.dominio.rodada.RodadaFactory;
 import br.iff.edu.jogodaforca.dominio.rodada.RodadaSorteioFactory;
 import br.iff.edu.jogodaforca.embdr.BDRRepositoryFactory;
@@ -30,10 +33,17 @@ public class Aplicacao {
 	
 	private RepositoryFactory repositoryFactory;
 	
+	private TemaFactory temaFactory;
+	
+	private PalavraFactory palavraFactory;
+	
+	private JogadorFactory jogadorFactory;
+	
 	private Aplicacao() {
-		if (tipoRodadaFactory.equals(TIPOS_RODADA_FACTORY[0])) {
-			rodadaFactory = RodadaSorteioFactory.getSoleInstance();	
-		}
+		
+	}
+	
+	public void configurar() {
 		if (tipoElementoGraficoFactory.equals(TIPOS_ELEMENTO_GRAFICO_FACTORY[0])) {
 			elementoGraficoFactory = ElementoGraficoTextoFactory.getSoleInstance();
 		} else {
@@ -44,9 +54,17 @@ public class Aplicacao {
 		} else {
 			repositoryFactory = BDRRepositoryFactory.getSoleInstance();
 		}
-	}
-	
-	public void configurar() {
+		
+		if (tipoRodadaFactory.equals(TIPOS_RODADA_FACTORY[0])) {
+			RodadaSorteioFactory.createSoleInstance(this.getRepositoryFactory().getRodadaRepository(),
+					this.getRepositoryFactory().getTemaRepository(),
+					this.getRepositoryFactory().getPalavraRepository());
+			rodadaFactory = RodadaSorteioFactory.getSoleInstance();	
+		}
+	    
+		TemaFactoryImpl.createSoleInstance(this.getRepositoryFactory().getTemaRepository());
+		PalavraFactoryImpl.createSoleInstance(this.getRepositoryFactory().getPalavraRepository());
+		JogadorFactoryImpl.createSoleInstance(this.getRepositoryFactory().getJogadorRepository());
 		
 	}
 	
@@ -97,18 +115,22 @@ public class Aplicacao {
 	}
 
 	public RodadaFactory getRodadaFactory() {
+		
 		return rodadaFactory;
 	}
 	
 	public TemaFactory getTemaFactory() {
-		return (TemaFactory) this.getRepositoryFactory().getTemaRepository();
+		temaFactory = TemaFactoryImpl.getSoleInstance();
+		return temaFactory;
 	}
 
 	public PalavraFactory getPalavraFactory() {
-		return (PalavraFactory) this.getRepositoryFactory().getPalavraRepository();
+		palavraFactory = PalavraFactoryImpl.getSoleInstance();
+		return palavraFactory;
 	}
 
 	public JogadorFactory getJogadorFactory() {
-		return (JogadorFactory) this.getRepositoryFactory().getJogadorRepository();
+		jogadorFactory = JogadorFactoryImpl.getSoleInstance();
+		return jogadorFactory;
 	}
 }

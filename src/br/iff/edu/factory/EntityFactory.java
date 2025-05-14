@@ -14,7 +14,9 @@ public abstract class EntityFactory {
 		if(repository != null) {
 			this.repository = repository;
 		}
-		throw new IllegalArgumentException("Repository não pode ser nulo!");
+		else {
+			throw new IllegalArgumentException("O repositório não pode ser nulo!");
+		}
 	}
 	protected Repository getRepository() {
 		return this.repository;

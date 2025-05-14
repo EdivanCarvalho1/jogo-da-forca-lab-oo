@@ -22,15 +22,15 @@ public class MemoriaRodadaRepository implements RodadaRepository {
 	}
 	
 	public static MemoriaRodadaRepository getSoleInstance() {
-		if (soleInstance == null) {
-			soleInstance = new MemoriaRodadaRepository();
+		if (soleInstance != null) {
+			return soleInstance;
 		}
-		return soleInstance;
+		return soleInstance = new MemoriaRodadaRepository();
 	}
 	
 	@Override
 	public long getProximoId() {
-		return this.id++;
+		return this.id += 1;
 	}
 
 	@Override

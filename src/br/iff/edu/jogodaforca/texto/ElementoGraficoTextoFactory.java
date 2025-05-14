@@ -20,10 +20,10 @@ public class ElementoGraficoTextoFactory implements ElementoGraficoFactory {
 	}
 
 	public static ElementoGraficoTextoFactory getSoleInstance() {
-		if (soleInstance == null) {
-			soleInstance = new ElementoGraficoTextoFactory();
+		if (soleInstance != null) {
+			return soleInstance;
 		}
-		return soleInstance;
+		return soleInstance = new ElementoGraficoTextoFactory();
 	}
 	
 	public Letra getLetra(char codigo) {
@@ -35,7 +35,6 @@ public class ElementoGraficoTextoFactory implements ElementoGraficoFactory {
 	}
 	
 	public Boneco getBoneco() {
-		
 		return bonecoTextoFactory.getBoneco();
 	}
 }
