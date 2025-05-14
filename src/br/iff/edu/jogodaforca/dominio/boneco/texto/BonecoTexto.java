@@ -14,10 +14,10 @@ public class BonecoTexto implements Boneco {
 	}
 
 	public static BonecoTexto getSoleInstance() {
-		if (soleInstance == null) {
-			soleInstance = new BonecoTexto();
+		if (soleInstance != null) {
+			return soleInstance;
 		}
-		return soleInstance;
+		return soleInstance = new BonecoTexto();
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 
 	private Map<Long, Tema> hashMap;
 
-	private Long id = 0L;
+	private long id = 0;
 
 	private MemoriaTemaRepository() {
 		hashMap = new HashMap<Long, Tema>();
@@ -29,7 +29,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 
 	@Override
 	public long getProximoId() {
-		return id +=1L;
+		return id +=1;
 	}
 
 	@Override
@@ -40,7 +40,12 @@ public class MemoriaTemaRepository implements TemaRepository {
 		if(this.hashMap.isEmpty()) {
 			throw new RuntimeException("A lista está vazia");
 		}
-		return this.hashMap.get(1);
+		for (Tema tema : this.hashMap.values()) {
+			if (tema.getId() == id) {
+				return tema;
+			}
+		}
+		throw new RuntimeException("Tema não encontrado!");
 	}
 
 	@Override

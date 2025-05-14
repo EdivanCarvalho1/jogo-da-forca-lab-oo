@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import br.iff.edu.bancodepalavras.dominio.palavra.Palavra;
 import br.iff.edu.bancodepalavras.dominio.palavra.PalavraRepository;
@@ -41,7 +42,8 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl implements RodadaFac
 	        throw new IllegalStateException("Nenhum tema disponível");
 	    }
 	    List<Tema> temas = new ArrayList<>(mapaTemas.values());
-	    Tema temaSorteado = getTemaRepository().getPorId(1);
+	    int indice = new Random().nextInt(temas.size());
+	    Tema temaSorteado = temas.get(indice);
 
 	    Map<Long, Palavra> mapaPalavras = getPalavraRepository().getPorTema(temaSorteado);
 	    List<Palavra> palavrasDoTema = new ArrayList<>(mapaPalavras.values());

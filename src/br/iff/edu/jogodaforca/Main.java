@@ -9,6 +9,7 @@ import br.iff.edu.bancodepalavras.dominio.palavra.PalavraFactory;
 import br.iff.edu.bancodepalavras.dominio.tema.Tema;
 import br.iff.edu.bancodepalavras.dominio.tema.TemaRepository;
 import br.iff.edu.jogodaforca.dominio.boneco.Boneco;
+import br.iff.edu.jogodaforca.dominio.boneco.texto.BonecoTextoFactory;
 import br.iff.edu.jogodaforca.dominio.jogador.Jogador;
 import br.iff.edu.jogodaforca.dominio.jogador.JogadorRepository;
 import br.iff.edu.jogodaforca.dominio.rodada.Rodada;
@@ -22,7 +23,7 @@ public class Main {
 		Aplicacao aplicacao = Aplicacao.getSoleInstance();
 		
 		aplicacao.configurar();
-
+		
 		RepositoryFactory aplicacaoRepositoryFactory = aplicacao.getRepositoryFactory();
 		
 		JogadorRepository jogadorRepository = aplicacaoRepositoryFactory.getJogadorRepository();
@@ -46,14 +47,8 @@ public class Main {
 
 		Boneco boneco = aplicacao.getBonecoFactory().getBoneco();
 
-		Palavra palavra = aplicacao.getPalavraFactory().getPalavra("Edivan",
-				tema);
-
-		Palavra palavra2 = aplicacao.getPalavraFactory().getPalavra("Iann",
-				tema);
-
-		Palavra palavra3 = aplicacao.getPalavraFactory().getPalavra("Samuel",
-				tema);
+		Rodada.setBonecoFactory(aplicacao.getBonecoFactory());
+		
 
 		PalavraAppService palavraAppService = PalavraAppService.getSoleInstance();
 
@@ -62,8 +57,6 @@ public class Main {
 		palavraAppService.novaPalavra("Edivan", tema.getId());
 		palavraAppService.novaPalavra("Iann", tema.getId());
 		palavraAppService.novaPalavra("Samuel", tema.getId());
-		palavraAppService.novaPalavra("Safdgd", tema.getId());
-		palavraAppService.novaPalavra("Samuel", tema.getId());
 
 		rodadaAppService.novaRodada(jogador.getId());
 
@@ -71,36 +64,46 @@ public class Main {
 		
 		Rodada novaRodada = aplicacao.getRodadaFactory().getRodada(jogador);
 
-		System.out.println("----Jogo da Forca----");
+
 		int option = 0;
 		char letra;
 		String tentativa;
 
-		System.out.println("Escolha uma opção:");
-		System.out.println("1 - Tentar");
-		System.out.println("2 - Arriscar");
-
-		while (true) {
-			if (novaRodada.encerrou()) {
-				break;
-			}
+		while (!novaRodada.encerrou()) {
+			System.out.println("----Jogo da Forca----");
+			System.out.println("1 - Tentar");
+			System.out.println("2 - Arriscar");
+			System.out.println("Escolha uma opção:");
+			option = scanner.nextInt();
 			switch (option) {
 			case 1:
 				System.out.println("Digite uma letra:");
 				letra = scanner.next().charAt(0);
+
 				novaRodada.tentar(letra);
+				novaRodada.exibirBoneco(novaRodada.getQtdeTentativas());
+				novaRodada.exibirPalavras();
+				novaRodada.exibirLetrasErradas();
 				break;
+
 			case 2:
 				System.out.println("Digite uma palavra:");
-				tentativa = scanner.nextLine();
-				Palavra[] palavras = novaRodada.getPalavras();
-				for (int i = 0; i < palavras.length; i++) {
-					if (palavras[i].comparar(tentativa)) {
+				tentativa = scanner.next();
+				for (int i = 0; i < novaRodada.getNumPalavras(); i++) {
+					novaRodada.getItens()[i].arriscar(tentativa);
+					if (novaRodada.getItens()[i].acertou()) {
 						System.out.println("Você acertou a palavra: " + tentativa);
-						break;
+					}else {
+						System.out.println("Você errou a palavra: " + tentativa);
 					}
 				}
 				break;
+			default:
+				System.out.println("Opção inválida! Tente novamente.");
+				break;
+			}
+			if(novaRodada.encerrou()){
+				System.out.println("A rodada foi encerrada! Sua Pontuação:" + novaRodada.calcularPontos());
 			}
 		}
 	}

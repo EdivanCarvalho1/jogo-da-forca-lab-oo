@@ -11,11 +11,12 @@ import br.iff.edu.jogodaforca.dominio.ObjetoDominioImpl;
 import br.iff.edu.jogodaforca.dominio.boneco.Boneco;
 import br.iff.edu.jogodaforca.dominio.boneco.BonecoFactory;
 import br.iff.edu.jogodaforca.dominio.jogador.Jogador;
+import br.iff.edu.jogodaforca.texto.ElementoGraficoTextoFactory;
 
 public class Rodada extends ObjetoDominioImpl {
 
 	private static int maxPalavras = 3;
-	private static int maxErros = 10;
+	private static int maxErros = 2;
 	private static int pontosQuandoDescobreLetra = 15;
 	private static int pontosQuandoDescobreTodas = 100;
 
@@ -54,10 +55,11 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 
 	public static Rodada criar(long id, Palavra[] palavras, Jogador jogador) {
-		if (boneco != null) {
-			return new Rodada(id, palavras, jogador);
+		boneco = bonecoFactory.getBoneco();
+		if (boneco == null) {
+			throw new RuntimeException("BonecoFactory precisa ser settado!");
 		}
-		throw new RuntimeException("BonecoFactory precisa ser settado!");
+		return new Rodada(id, palavras, jogador);
 	}
 
 	public static Rodada reconstituir(long id, Item[] itens, Letra[] erradas, Jogador jogador) {
@@ -67,7 +69,7 @@ public class Rodada extends ObjetoDominioImpl {
 
 		throw new RuntimeException("BonecoFactory precisa ser settado!");
 	}
-
+	
 	public static int getMaxPalavras() {
 		return maxPalavras;
 	}
@@ -159,7 +161,10 @@ public class Rodada extends ObjetoDominioImpl {
 	        System.out.println("Você errou!");
 	    }
 	}
-
+	
+	public Item[] getItens() {
+		return itens;
+	}
 
 	public boolean arriscou() {
 		return arriscou;
@@ -177,29 +182,33 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	public int calcularPontos() {
 		int pontos = 0;
-		if(descobriu()) {
-			for(Item item: itens) {
-				pontos += item.getPontosLetrasDescobertas(pontosQuandoDescobreLetra);
-			}
-			return pontos + pontosQuandoDescobreTodas;
+		for (Item item : itens) {
+			pontos += item.getPontosLetrasDescobertas(pontosQuandoDescobreLetra);
 		}
-		return 0;
+		if (descobriu()) {
+			pontos += pontosQuandoDescobreTodas;
+		}
+		return pontos;
 	}
 	public void exibirItens() {
 		for(Item item : itens) {
-			item.exibir(item);
+			item.exibir();
 		}
 	}
 	public void exibirBoneco(Object context) {
 		boneco.exibir(context, this.getQtdeErros());
 	}
 	public void exibirPalavras() {
-		
+		for(Item item : this.itens) {
+			item.exibir();
+		}
 	}
 	public void exibirLetrasErradas() {
+		System.out.print("Letras erradas: ");
 		for(Letra l: erradas) {
 			System.out.print(l.getCodigo() + ", ");
 		}
+		System.out.println();
 	}
 	public Letra[] getTentativas() {
 	    List<Letra> tentativas = new ArrayList<>(Arrays.asList(getErradas()));
@@ -232,7 +241,7 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public int getQtdeTentativasRestantes() {
-		return maxErros - getQtdeTentativas();
+		return maxErros - getQtdeErros();
 	}
 	public int getQtdeErros() {
 		return this.getErradas().length;

@@ -12,10 +12,10 @@ public class BonecoTextoFactory implements BonecoFactory{
 	}
 	
 	public static BonecoTextoFactory getSoleInstance() {
-		if(soleInstance == null) {
-			soleInstance = new BonecoTextoFactory();
+		if(soleInstance != null) {
+			return soleInstance;
 		}
-		return soleInstance;
+		return soleInstance = new BonecoTextoFactory();
 	}
 	
 	@Override

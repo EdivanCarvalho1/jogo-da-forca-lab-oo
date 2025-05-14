@@ -46,10 +46,10 @@ public class MemoriaRodadaRepository implements RodadaRepository {
 
 	@Override
 	public void inserir(Rodada rodada) throws RepositoryException {
-		if(rodada != null) {
-			this.memoriaRodada.put(rodada.getId(), rodada);
+		if(rodada == null) {
+			throw new RepositoryException("Rodada não pode ser nula!");
 		}
-		throw new RepositoryException("Rodada não pode ser nula!");
+		this.memoriaRodada.put(rodada.getId(), rodada);
 	}
 
 	@Override

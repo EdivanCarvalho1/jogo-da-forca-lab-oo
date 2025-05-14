@@ -1,10 +1,9 @@
 package br.iff.edu.jogodaforca.dominio.rodada;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import br.iff.edu.bancodepalavras.dominio.letra.Letra;
 import br.iff.edu.bancodepalavras.dominio.letra.LetraFactory;
@@ -13,17 +12,17 @@ import br.iff.edu.jogodaforca.dominio.ObjetoDominioImpl;
 
 public class Item extends ObjetoDominioImpl {
 
-	private int[] posicoesDescobertas;
+	private List<Integer> posicoesDescobertas;
 	private String palavraArriscada = null;
 	private Palavra palavra;
 
 	private Item(long id, Palavra palavra) {
 		super(id);
 		this.palavra = palavra;
-		this.posicoesDescobertas = new int[palavra.getTamanho()];
+		this.posicoesDescobertas = new ArrayList<>();
 	}
 
-	private Item(long id, Palavra palavra, int[] posicoesDescobertas, String palavraArriscada) {
+	private Item(long id, Palavra palavra, List<Integer> posicoesDescobertas, String palavraArriscada) {
 		super(id);
 		this.palavra = palavra;
 		this.posicoesDescobertas = posicoesDescobertas;
@@ -34,7 +33,7 @@ public class Item extends ObjetoDominioImpl {
 		return new Item(id, palavra);
 	}
 
-	public static Item reconstituir(long id, Palavra palavra, int[] posicoesDescobertas, String palavraArriscada) {
+	public static Item reconstituir(long id, Palavra palavra, List<Integer> posicoesDescobertas, String palavraArriscada) {
 		return new Item(id, palavra, posicoesDescobertas, palavraArriscada);
 	}
 
@@ -46,78 +45,63 @@ public class Item extends ObjetoDominioImpl {
 	}
 
 	public Letra[] getLetrasEncobertas() {
-		
 	    LetraFactory letraFactory = Palavra.getLetraFactory();
-	    
 	    Letra[] todasAsLetras = this.palavra.getLetras();
-	    
-	    Set<Integer> posicoesDescobertasSet = Arrays.stream(posicoesDescobertas).boxed().collect(Collectors.toSet());
-
-	    List<Letra> letrasDescobertas = new ArrayList<>();
+	    Set<Integer> posicoesSet = new HashSet<>(this.posicoesDescobertas);
+	    List<Letra> letrasEncobertas = new ArrayList<>();
 
 	    for (int i = 0; i < todasAsLetras.length; i++) {
-	        if (!posicoesDescobertasSet.contains(i)) {
-	            letrasDescobertas.add(letraFactory.getLetraEncoberta());
+	        if (!posicoesSet.contains(i)) {
+	            letrasEncobertas.add(letraFactory.getLetraEncoberta());
 	        }
 	    }
 
-	    return letrasDescobertas.toArray(new Letra[0]);
+	    return letrasEncobertas.toArray(new Letra[0]);
 	}
-	
-	public Letra[] getLetrasDescobertas() {
-		
-	    LetraFactory letraFactory = Palavra.getLetraFactory();
-	    
-	    Letra[] todasAsLetras = this.palavra.getLetras();
-	    
-	    Set<Integer> posicoesDescobertasSet = Arrays.stream(posicoesDescobertas).boxed().collect(Collectors.toSet());
 
+	public Letra[] getLetrasDescobertas() {
+	    Letra[] todasAsLetras = this.palavra.getLetras();
+	    Set<Integer> posicoesSet = new HashSet<>(this.posicoesDescobertas);
 	    List<Letra> letrasDescobertas = new ArrayList<>();
 
 	    for (int i = 0; i < todasAsLetras.length; i++) {
-	        if (posicoesDescobertasSet.contains(i)) {
+	        if (posicoesSet.contains(i)) {
 	            letrasDescobertas.add(todasAsLetras[i]);
 	        }
 	    }
 
 	    return letrasDescobertas.toArray(new Letra[0]);
 	}
-	
+
 	public int qtdeLetrasEncobertas() {
-		
-		int count = 0;
-	    
 	    Letra[] todasAsLetras = this.palavra.getLetras();
-	    
-	    Set<Integer> posicoesDescobertasSet = Arrays.stream(posicoesDescobertas).boxed().collect(Collectors.toSet());
+	    Set<Integer> posicoesSet = new HashSet<>(this.posicoesDescobertas);
+	    int count = 0;
 
 	    for (int i = 0; i < todasAsLetras.length; i++) {
-	        if (!posicoesDescobertasSet.contains(i)) {
+	        if (!posicoesSet.contains(i)) {
 	            count++;
 	        }
 	    }
-	    
-	    return count;
 
+	    return count;
 	}
-	
+
 	public int getPontosLetrasDescobertas(int pontos) {
-		return pontos * this.qtdeLetrasEncobertas() - this.posicoesDescobertas.length;
+		return pontos * this.posicoesDescobertas.size();
 	}
-	
+
 	public boolean descobriu() {
 		return this.acertou() || this.qtdeLetrasEncobertas() == 0;
 	}
 
-	public void exibir(Object context) {
+	public void exibir() {
 	    LetraFactory letraFactory = Palavra.getLetraFactory();
 	    Letra[] todasAsLetras = this.palavra.getLetras();
-	    Set<Integer> posicoesDescobertasSet = Arrays.stream(posicoesDescobertas)
-	                                                 .boxed()
-	                                                 .collect(Collectors.toSet());
+	    Set<Integer> posicoesSet = new HashSet<>(this.posicoesDescobertas);
 
 	    for (int i = 0; i < todasAsLetras.length; i++) {
-	        if (posicoesDescobertasSet.contains(i)) {
+	        if (posicoesSet.contains(i)) {
 	            System.out.print(todasAsLetras[i].getCodigo());
 	        } else {
 	            System.out.print(letraFactory.getLetraEncoberta().getCodigo());
@@ -127,25 +111,27 @@ public class Item extends ObjetoDominioImpl {
 	}
 
 	protected boolean tentar(char codigo) {
-		for(int i = 0; i < palavra.getLetras().length; i++) {
-			if(codigo == this.palavra.getLetra(i).getCodigo()) {
-				this.posicoesDescobertas[i] = i;
-				return true;
+		boolean encontrou = false;
+		for (int i = 0; i < palavra.getLetras().length; i++) {
+			if (codigo == this.palavra.getLetra(i).getCodigo()) {
+				if (!this.posicoesDescobertas.contains(i)) {
+					this.posicoesDescobertas.add(i);
+				}
+				encontrou = true;
 			}
 		}
-		return false;
+		return encontrou;
 	}
-	
+
 	public void arriscar(String palavra) {
 		this.palavraArriscada = palavra;
 	}
-	
+
 	public boolean acertou() {
-		return palavra.comparar(palavraArriscada);
+	    return palavraArriscada != null && palavra.comparar(palavraArriscada);
 	}
-	
+
 	public boolean arriscou() {
 		return this.palavraArriscada != null;
 	}
-	
 }

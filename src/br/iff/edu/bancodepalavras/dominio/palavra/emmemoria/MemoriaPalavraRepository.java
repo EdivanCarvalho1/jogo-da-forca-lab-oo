@@ -45,10 +45,9 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 		
 		Map<Long, Palavra> resultado = new HashMap<>();
 
-		for (Map.Entry<Long, Palavra> entry : hashMap.entrySet()) {
-			Palavra palavra = entry.getValue();
-			if (palavra.getTema().equals(palavra)) {
-				resultado.put(entry.getKey(), palavra);
+		for (Palavra palavra : this.hashMap.values()) {
+			if (palavra.getTema().getId() == tema.getId()) {
+				resultado.put(palavra.getId(), palavra);
 			}
 		}
 
