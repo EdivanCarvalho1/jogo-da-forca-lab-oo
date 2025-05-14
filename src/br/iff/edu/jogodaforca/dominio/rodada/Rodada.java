@@ -188,7 +188,7 @@ public class Rodada extends ObjetoDominioImpl {
 		if (descobriu()) {
 			pontos += pontosQuandoDescobreTodas;
 		}
-		return pontos;
+		return pontos / maxPalavras;
 	}
 	public void exibirItens() {
 		for(Item item : itens) {
